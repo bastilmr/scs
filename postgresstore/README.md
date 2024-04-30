@@ -1,16 +1,17 @@
 # postgresstore
 
-A PostgreSQL based session store for [SCS](https://github.com/alexedwards/scs) using the [pq](https://github.com/lib/pq) driver.
+A PostgreSQL based session store for [SCS](https://github.com/bastilmr/scs) using the [pq](https://github.com/lib/pq) driver.
 
 ## Setup
 
 You should have a working PostgreSQL database containing a `sessions` table with the definition:
 
 ```sql
-CREATE TABLE sessions (
-	token TEXT PRIMARY KEY,
-	data BYTEA NOT NULL,
-	expiry TIMESTAMPTZ NOT NULL
+CREATE TABLE auth.sessions (
+    token TEXT PRIMARY KEY,
+    data BYTEA NOT NULL,
+    expiry TIMESTAMPTZ NOT NULL,
+    user_id INT REFERENCES auth.users(id) -- Hier wird die Fremdschlüsselbeziehung definiert
 );
 
 CREATE INDEX sessions_expiry_idx ON sessions (expiry);
@@ -29,8 +30,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/alexedwards/scs/v2"
-	"github.com/alexedwards/scs/postgresstore"
+	"github.com/bastilmr/scs/v2"
+	"github.com/bastilmr/scs/postgresstore"
 
 	_ "github.com/lib/pq"
 )

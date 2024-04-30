@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/alexedwards/scs/v2/mockstore"
+	"github.com/bastilmr/scs/v2/mockstore"
 )
 
 func TestSessionDataFromContext(t *testing.T) {
@@ -34,6 +34,7 @@ func TestSessionManager_Load(T *testing.T) {
 
 		ctx := context.Background()
 		expected := "example"
+		expectedId := 1
 		exampleDeadline := time.Now().Add(time.Hour)
 
 		encodedValue, err := s.Codec.Encode(exampleDeadline, map[string]interface{}{
@@ -43,7 +44,7 @@ func TestSessionManager_Load(T *testing.T) {
 			t.Errorf("unexpected error encoding value: %v", err)
 		}
 
-		if err := s.Store.Commit(expected, encodedValue, exampleDeadline); err != nil {
+		if err := s.Store.Commit(expected, encodedValue, exampleDeadline, expectedId); err != nil {
 			t.Errorf("error committing to session store: %v", err)
 		}
 
@@ -92,6 +93,7 @@ func TestSessionManager_Load(T *testing.T) {
 
 		ctx := context.Background()
 		expected := ""
+		expectedId := 1
 		exampleDeadline := time.Now().Add(time.Hour)
 
 		encodedValue, err := s.Codec.Encode(exampleDeadline, map[string]interface{}{
@@ -101,7 +103,7 @@ func TestSessionManager_Load(T *testing.T) {
 			t.Errorf("unexpected error encoding value: %v", err)
 		}
 
-		if err := s.Store.Commit(expected, encodedValue, exampleDeadline); err != nil {
+		if err := s.Store.Commit(expected, encodedValue, exampleDeadline, expectedId); err != nil {
 			t.Errorf("error committing to session store: %v", err)
 		}
 
@@ -135,8 +137,9 @@ func TestSessionManager_Load(T *testing.T) {
 
 		ctx := context.Background()
 		expected := "example"
+		expectedId := 1
 
-		store.ExpectFind(expected, []byte{}, true, errors.New("arbitrary"))
+		store.ExpectFind(expected, []byte{}, true, expectedId, errors.New("arbitrary"))
 		s.Store = store
 
 		newCtx, err := s.Load(ctx, expected)
@@ -184,9 +187,10 @@ func TestSessionManager_Load(T *testing.T) {
 
 		ctx := context.Background()
 		expected := "example"
+		expectedId := 1
 		exampleDeadline := time.Now().Add(time.Hour)
 
-		if err := s.Store.Commit(expected, []byte(""), exampleDeadline); err != nil {
+		if err := s.Store.Commit(expected, []byte(""), exampleDeadline, expectedId); err != nil {
 			t.Errorf("error committing to session store: %v", err)
 		}
 
@@ -337,6 +341,7 @@ func TestSessionManager_Commit(T *testing.T) {
 
 		store := &mockstore.MockStore{}
 		expectedErr := errors.New("arbitrary")
+		expectedId := 1
 
 		sd := &sessionData{
 			deadline: time.Now().Add(time.Hour),
@@ -353,7 +358,7 @@ func TestSessionManager_Commit(T *testing.T) {
 
 		ctx := context.WithValue(context.Background(), s.contextKey, sd)
 
-		store.ExpectCommit(sd.token, expectedBytes, sd.deadline, expectedErr)
+		store.ExpectCommit(sd.token, expectedBytes, sd.deadline, expectedId, expectedErr)
 		s.Store = store
 
 		actualToken, _, err := s.Commit(ctx)

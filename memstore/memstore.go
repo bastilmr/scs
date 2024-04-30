@@ -8,6 +8,7 @@ import (
 type item struct {
 	object     []byte
 	expiration int64
+	id         interface{}
 }
 
 // MemStore represents the session store.
@@ -61,11 +62,12 @@ func (m *MemStore) Find(token string) ([]byte, bool, error) {
 // Commit adds a session token and data to the MemStore instance with the given
 // expiry time. If the session token already exists, then the data and expiry
 // time are updated.
-func (m *MemStore) Commit(token string, b []byte, expiry time.Time) error {
+func (m *MemStore) Commit(token string, b []byte, expiry time.Time, id interface{}) error {
 	m.mu.Lock()
 	m.items[token] = item{
 		object:     b,
 		expiration: expiry.UnixNano(),
+		id:         id,
 	}
 	m.mu.Unlock()
 

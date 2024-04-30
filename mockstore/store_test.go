@@ -53,8 +53,9 @@ func TestMockStore_Find(T *testing.T) {
 		exampleToken := "token"
 		expectedBytes := []byte("hello, world!")
 		expectedFound := true
+		expectedId := 1
 
-		s.ExpectFind(exampleToken, expectedBytes, expectedFound, nil)
+		s.ExpectFind(exampleToken, expectedBytes, expectedFound, expectedId, nil)
 
 		actualBytes, actualFound, actualErr := s.Find(exampleToken)
 		if !bytes.Equal(actualBytes, expectedBytes) {
@@ -98,11 +99,12 @@ func TestMockStore_Commit(T *testing.T) {
 		exampleToken := "token"
 		exampleBytes := []byte("hello, world!")
 		exampleExpiry := time.Now().Add(time.Hour)
+		exampleId := 1
 		expectedErr := errors.New("arbitrary")
 
-		s.ExpectCommit(exampleToken, exampleBytes, exampleExpiry, expectedErr)
+		s.ExpectCommit(exampleToken, exampleBytes, exampleExpiry, exampleId, expectedErr)
 
-		if err := s.Commit(exampleToken, exampleBytes, exampleExpiry); err != expectedErr {
+		if err := s.Commit(exampleToken, exampleBytes, exampleExpiry, exampleId); err != expectedErr {
 			t.Error("expected error not returned")
 		}
 		if len(s.commitExpectations) != 0 {
@@ -116,6 +118,7 @@ func TestMockStore_Commit(T *testing.T) {
 		exampleToken := "token"
 		exampleBytes := []byte("hello, world!")
 		exampleExpiry := time.Now().Add(time.Hour)
+		exampleId := 1
 
 		defer func() {
 			if r := recover(); r == nil {
@@ -123,7 +126,7 @@ func TestMockStore_Commit(T *testing.T) {
 			}
 		}()
 
-		if err := s.Commit(exampleToken, exampleBytes, exampleExpiry); err != nil {
+		if err := s.Commit(exampleToken, exampleBytes, exampleExpiry, exampleId); err != nil {
 			t.Error("unexpected error returned")
 		}
 	})

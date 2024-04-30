@@ -38,7 +38,7 @@ func TestFindMissing(t *testing.T) {
 func TestCommitNew(t *testing.T) {
 	m := NewWithCleanupInterval(0)
 
-	err := m.Commit("session_token", []byte("encoded_data"), time.Now().Add(time.Minute))
+	err := m.Commit("session_token", []byte("encoded_data"), time.Now().Add(time.Minute), 1)
 	if err != nil {
 		t.Fatalf("got %v: expected %v", err, nil)
 	}
@@ -56,12 +56,12 @@ func TestCommitNew(t *testing.T) {
 func TestCommitUpdated(t *testing.T) {
 	m := NewWithCleanupInterval(0)
 
-	err := m.Commit("session_token", []byte("encoded_data"), time.Now().Add(time.Minute))
+	err := m.Commit("session_token", []byte("encoded_data"), time.Now().Add(time.Minute), 1)
 	if err != nil {
 		t.Fatalf("got %v: expected %v", err, nil)
 	}
 
-	err = m.Commit("session_token", []byte("new_encoded_data"), time.Now().Add(time.Minute))
+	err = m.Commit("session_token", []byte("new_encoded_data"), time.Now().Add(time.Minute), 1)
 	if err != nil {
 		t.Fatalf("got %v: expected %v", err, nil)
 	}
@@ -76,7 +76,7 @@ func TestCommitUpdated(t *testing.T) {
 func TestExpiry(t *testing.T) {
 	m := NewWithCleanupInterval(0)
 
-	err := m.Commit("session_token", []byte("encoded_data"), time.Now().Add(100*time.Millisecond))
+	err := m.Commit("session_token", []byte("encoded_data"), time.Now().Add(100*time.Millisecond), 1)
 	if err != nil {
 		t.Fatalf("got %v: expected %v", err, nil)
 	}

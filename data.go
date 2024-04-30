@@ -116,7 +116,12 @@ func (s *SessionManager) Commit(ctx context.Context) (string, time.Time, error) 
 		}
 	}
 
-	if err := s.doStoreCommit(ctx, sd.token, b, expiry); err != nil {
+	id, ok := sd.values["id"].(interface{})
+	if !ok {
+		id = nil
+	}
+
+	if err := s.doStoreCommit(ctx, sd.token, b, expiry, id); err != nil {
 		return "", time.Time{}, err
 	}
 
@@ -669,17 +674,17 @@ func (s *SessionManager) doStoreFind(ctx context.Context, token string) (b []byt
 	return s.Store.Find(token)
 }
 
-func (s *SessionManager) doStoreCommit(ctx context.Context, token string, b []byte, expiry time.Time) (err error) {
+func (s *SessionManager) doStoreCommit(ctx context.Context, token string, b []byte, expiry time.Time, id interface{}) (err error) {
 	if s.HashTokenInStore {
 		token = hashToken(token)
 	}
 	c, ok := s.Store.(interface {
-		CommitCtx(context.Context, string, []byte, time.Time) error
+		CommitCtx(context.Context, string, []byte, time.Time, interface{}) error
 	})
 	if ok {
-		return c.CommitCtx(ctx, token, b, expiry)
+		return c.CommitCtx(ctx, token, b, expiry, id)
 	}
-	return s.Store.Commit(token, b, expiry)
+	return s.Store.Commit(token, b, expiry, id)
 }
 
 func (s *SessionManager) doStoreAll(ctx context.Context) (map[string][]byte, error) {

@@ -34,7 +34,7 @@ func NewWithCleanupInterval(db *sql.DB, cleanupInterval time.Duration) *Postgres
 // If the session token is not found or is expired, the returned exists flag will
 // be set to false.
 func (p *PostgresStore) Find(token string) (b []byte, exists bool, err error) {
-	row := p.db.QueryRow("SELECT data FROM sessions WHERE token = $1 AND current_timestamp < expiry", token)
+	row := p.db.QueryRow("SELECT data FROM auth.sessions WHERE token = $1 AND current_timestamp < expiry", token)
 	err = row.Scan(&b)
 	if err == sql.ErrNoRows {
 		return nil, false, nil
@@ -47,8 +47,8 @@ func (p *PostgresStore) Find(token string) (b []byte, exists bool, err error) {
 // Commit adds a session token and data to the PostgresStore instance with the
 // given expiry time. If the session token already exists, then the data and expiry
 // time are updated.
-func (p *PostgresStore) Commit(token string, b []byte, expiry time.Time) error {
-	_, err := p.db.Exec("INSERT INTO sessions (token, data, expiry) VALUES ($1, $2, $3) ON CONFLICT (token) DO UPDATE SET data = EXCLUDED.data, expiry = EXCLUDED.expiry", token, b, expiry)
+func (p *PostgresStore) Commit(token string, b []byte, expiry time.Time, id interface{}) error {
+	_, err := p.db.Exec("INSERT INTO auth.sessions (token, data, expiry, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT (token) DO UPDATE SET data = EXCLUDED.data, expiry = EXCLUDED.expiry", token, b, expiry, id)
 	if err != nil {
 		return err
 	}
@@ -58,14 +58,14 @@ func (p *PostgresStore) Commit(token string, b []byte, expiry time.Time) error {
 // Delete removes a session token and corresponding data from the PostgresStore
 // instance.
 func (p *PostgresStore) Delete(token string) error {
-	_, err := p.db.Exec("DELETE FROM sessions WHERE token = $1", token)
+	_, err := p.db.Exec("DELETE FROM auth.sessions WHERE token = $1", token)
 	return err
 }
 
 // All returns a map containing the token and data for all active (i.e.
 // not expired) sessions in the PostgresStore instance.
 func (p *PostgresStore) All() (map[string][]byte, error) {
-	rows, err := p.db.Query("SELECT token, data FROM sessions WHERE current_timestamp < expiry")
+	rows, err := p.db.Query("SELECT token, data FROM auth.sessions WHERE current_timestamp < expiry")
 	if err != nil {
 		return nil, err
 	}
@@ -129,6 +129,6 @@ func (p *PostgresStore) StopCleanup() {
 }
 
 func (p *PostgresStore) deleteExpired() error {
-	_, err := p.db.Exec("DELETE FROM sessions WHERE expiry < current_timestamp")
+	_, err := p.db.Exec("DELETE FROM auth.sessions WHERE expiry < current_timestamp")
 	return err
 }

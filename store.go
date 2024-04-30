@@ -22,7 +22,7 @@ type Store interface {
 	// Commit should add the session token and data to the store, with the given
 	// expiry time. If the session token already exists, then the data and
 	// expiry time should be overwritten.
-	Commit(token string, b []byte, expiry time.Time) (err error)
+	Commit(token string, b []byte, expiry time.Time, id interface{}) (err error)
 }
 
 // IterableStore is the interface for session stores which support iteration.
@@ -46,7 +46,7 @@ type CtxStore interface {
 	FindCtx(ctx context.Context, token string) (b []byte, found bool, err error)
 
 	// CommitCtx is the same as Store.Commit, except it takes a context.Context.
-	CommitCtx(ctx context.Context, token string, b []byte, expiry time.Time) (err error)
+	CommitCtx(ctx context.Context, token string, b []byte, expiry time.Time, id interface{}) (err error)
 }
 
 // IterableCtxStore is the interface for session stores which support iteration

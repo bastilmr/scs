@@ -87,7 +87,7 @@ func TestSaveNew(t *testing.T) {
 
 	p := NewWithCleanupInterval(db, 0)
 
-	err = p.Commit("session_token", []byte("encoded_data"), time.Now().Add(time.Minute))
+	err = p.Commit("session_token", []byte("encoded_data"), time.Now().Add(time.Minute), 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -124,7 +124,7 @@ func TestSaveUpdated(t *testing.T) {
 
 	p := NewWithCleanupInterval(db, 0)
 
-	err = p.Commit("session_token", []byte("new_encoded_data"), time.Now().Add(time.Minute))
+	err = p.Commit("session_token", []byte("new_encoded_data"), time.Now().Add(time.Minute), 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -157,7 +157,7 @@ func TestExpiry(t *testing.T) {
 
 	p := NewWithCleanupInterval(db, 0)
 
-	err = p.Commit("session_token", []byte("encoded_data"), time.Now().Add(100*time.Millisecond))
+	err = p.Commit("session_token", []byte("encoded_data"), time.Now().Add(100*time.Millisecond), 1)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -229,7 +229,7 @@ func TestCleanup(t *testing.T) {
 	p := NewWithCleanupInterval(db, 200*time.Millisecond)
 	defer p.StopCleanup()
 
-	err = p.Commit("session_token", []byte("encoded_data"), time.Now().Add(100*time.Millisecond))
+	err = p.Commit("session_token", []byte("encoded_data"), time.Now().Add(100*time.Millisecond), 1)
 	if err != nil {
 		t.Fatal(err)
 	}

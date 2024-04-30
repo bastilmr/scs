@@ -14,6 +14,7 @@ type expectedFind struct {
 	inputToken  string
 	returnB     []byte
 	returnFound bool
+	returnId    interface{}
 	returnErr   error
 }
 
@@ -21,6 +22,7 @@ type expectedCommit struct {
 	inputToken  string
 	inputB      []byte
 	inputExpiry time.Time
+	inputId     interface{}
 	returnErr   error
 }
 
@@ -66,11 +68,12 @@ func (m *MockStore) Delete(token string) (err error) {
 	return errToReturn
 }
 
-func (m *MockStore) ExpectFind(token string, b []byte, found bool, err error) {
+func (m *MockStore) ExpectFind(token string, b []byte, found bool, id interface{}, err error) {
 	m.findExpectations = append(m.findExpectations, expectedFind{
 		inputToken:  token,
 		returnB:     b,
 		returnFound: found,
+		returnId:    id,
 		returnErr:   err,
 	})
 }
@@ -98,17 +101,18 @@ func (m *MockStore) Find(token string) (b []byte, found bool, err error) {
 	return valueToReturn.returnB, valueToReturn.returnFound, valueToReturn.returnErr
 }
 
-func (m *MockStore) ExpectCommit(token string, b []byte, expiry time.Time, err error) {
+func (m *MockStore) ExpectCommit(token string, b []byte, expiry time.Time, id interface{}, err error) {
 	m.commitExpectations = append(m.commitExpectations, expectedCommit{
 		inputToken:  token,
 		inputB:      b,
 		inputExpiry: expiry,
+		inputId:     id,
 		returnErr:   err,
 	})
 }
 
 // Commit implements the Store interface
-func (m *MockStore) Commit(token string, b []byte, expiry time.Time) (err error) {
+func (m *MockStore) Commit(token string, b []byte, expiry time.Time, id interface{}) (err error) {
 	var (
 		indexToRemove    int
 		expectationFound bool
