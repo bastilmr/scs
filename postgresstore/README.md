@@ -11,7 +11,7 @@ CREATE TABLE auth.sessions (
     token TEXT PRIMARY KEY,
     data BYTEA NOT NULL,
     expiry TIMESTAMPTZ NOT NULL,
-    user_id INT REFERENCES auth.users(id) -- Hier wird die Fremdschlüsselbeziehung definiert
+    user_id INT REFERENCES auth.users(id) ON DELETE CASCADE
 );
 
 CREATE INDEX sessions_expiry_idx ON sessions (expiry);
