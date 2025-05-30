@@ -1,2 +1,4 @@
+github.com/bastilmr/scs/v2 v2.0.0-20250530085710-2de25f4bc31a h1:rehiqrv7uxvZ68EDaMhlQ+ZHR8NW9g+OseOSKmfkYaw=
+github.com/bastilmr/scs/v2 v2.0.0-20250530085710-2de25f4bc31a/go.mod h1:lqad0klWqJ+lqVaNiSVlh126TRRXJW94Qzj9nqLAM2E=
 github.com/lib/pq v1.4.0 h1:TmtCFbH+Aw0AixwyttznSMQDgbR5Yed/Gg6S8Funrhc=
 github.com/lib/pq v1.4.0/go.mod h1:5WUZQaWbwv1U+lTReE5YruASi9Al49XbQIvNi/34Woo=
