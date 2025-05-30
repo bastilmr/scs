@@ -1,4 +1,4 @@
-module github.com/alexedwards/scs/buntdbstore
+module github.com/bastilmr/scs/buntdbstore
 
 go 1.16
 

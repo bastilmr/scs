@@ -1,8 +1,8 @@
 # SCS: HTTP Session Management for Go
 
-[![GoDoc](https://godoc.org/github.com/alexedwards/scs?status.png)](https://pkg.go.dev/github.com/alexedwards/scs/v2?tab=doc)
-[![Go report card](https://goreportcard.com/badge/github.com/alexedwards/scs)](https://goreportcard.com/report/github.com/alexedwards/scs)
-[![Test coverage](http://gocover.io/_badge/github.com/alexedwards/scs)](https://gocover.io/github.com/alexedwards/scs)
+[![GoDoc](https://godoc.org/github.com/bastilmr/scs?status.png)](https://pkg.go.dev/github.com/bastilmr/scs/v2?tab=doc)
+[![Go report card](https://goreportcard.com/badge/github.com/bastilmr/scs)](https://goreportcard.com/report/github.com/bastilmr/scs)
+[![Test coverage](http://gocover.io/_badge/github.com/bastilmr/scs)](https://gocover.io/github.com/bastilmr/scs)
 
 ## Features
 
@@ -36,12 +36,12 @@
 This package requires Go 1.12 or newer.
 
 ```sh
-go get github.com/alexedwards/scs/v2
+go get github.com/bastilmr/scs/v2
 ```
 
-Note: If you're using the traditional `GOPATH` mechanism to manage dependencies, instead of modules, you'll need to `go get` and `import` `github.com/alexedwards/scs` without the `v2` suffix.
+Note: If you're using the traditional `GOPATH` mechanism to manage dependencies, instead of modules, you'll need to `go get` and `import` `github.com/bastilmr/scs` without the `v2` suffix.
 
-Please use [versioned releases](https://github.com/alexedwards/scs/releases). Code in tip may contain experimental features which are subject to change.
+Please use [versioned releases](https://github.com/bastilmr/scs/releases). Code in tip may contain experimental features which are subject to change.
 
 ### Basic Use
 
@@ -55,7 +55,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/alexedwards/scs/v2"
+	"github.com/bastilmr/scs/v2"
 )
 
 var sessionManager *scs.SessionManager
@@ -122,27 +122,27 @@ sessionManager.Cookie.Secure = true
 sessionManager.Cookie.Partitioned = true
 ```
 
-Documentation for all available settings and their default values can be [found here](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager).
+Documentation for all available settings and their default values can be [found here](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager).
 
 ### Working with Session Data
 
-Data can be set using the [`Put()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Put) method and retrieved with the [`Get()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Get) method. A variety of helper methods like [`GetString()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetString), [`GetInt()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetInt) and [`GetBytes()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.GetBytes) are included for common data types. Please see [the documentation](https://pkg.go.dev/github.com/alexedwards/scs/v2#pkg-index) for a full list of helper methods.
+Data can be set using the [`Put()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.Put) method and retrieved with the [`Get()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.Get) method. A variety of helper methods like [`GetString()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.GetString), [`GetInt()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.GetInt) and [`GetBytes()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.GetBytes) are included for common data types. Please see [the documentation](https://pkg.go.dev/github.com/bastilmr/scs/v2#pkg-index) for a full list of helper methods.
 
-The [`Pop()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Pop) method (and accompanying helpers for common data types) act like a one-time `Get()`, retrieving the data and removing it from the session in one step. These are useful if you want to implement 'flash' message functionality in your application, where messages are displayed to the user once only.
+The [`Pop()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.Pop) method (and accompanying helpers for common data types) act like a one-time `Get()`, retrieving the data and removing it from the session in one step. These are useful if you want to implement 'flash' message functionality in your application, where messages are displayed to the user once only.
 
-Some other useful functions are [`Exists()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Exists) (which returns a `bool` indicating whether or not a given key exists in the session data) and [`Keys()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Keys) (which returns a sorted slice of keys in the session data).
+Some other useful functions are [`Exists()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.Exists) (which returns a `bool` indicating whether or not a given key exists in the session data) and [`Keys()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.Keys) (which returns a sorted slice of keys in the session data).
 
-Individual data items can be deleted from the session using the [`Remove()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Remove) method. Alternatively, all session data can be deleted by using the [`Destroy()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.Destroy) method. After calling `Destroy()`, any further operations in the same request cycle will result in a new session being created --- with a new session token and a new lifetime.
+Individual data items can be deleted from the session using the [`Remove()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.Remove) method. Alternatively, all session data can be deleted by using the [`Destroy()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.Destroy) method. After calling `Destroy()`, any further operations in the same request cycle will result in a new session being created --- with a new session token and a new lifetime.
 
-Behind the scenes SCS uses gob encoding to store session data, so if you want to store custom types in the session data they must be [registered](https://golang.org/pkg/encoding/gob/#Register) with the encoding/gob package first. Struct fields of custom types must also be exported so that they are visible to the encoding/gob package. Please [see here](https://gist.github.com/alexedwards/d6eca7136f98ec12ad606e774d3abad3) for a working example.
+Behind the scenes SCS uses gob encoding to store session data, so if you want to store custom types in the session data they must be [registered](https://golang.org/pkg/encoding/gob/#Register) with the encoding/gob package first. Struct fields of custom types must also be exported so that they are visible to the encoding/gob package. Please [see here](https://gist.github.com/bastilmr/d6eca7136f98ec12ad606e774d3abad3) for a working example.
 
 ### Loading and Saving Sessions
 
-Most applications will use the [`LoadAndSave()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.LoadAndSave) middleware. This middleware takes care of loading and committing session data to the session store, and communicating the session token to/from the client in a cookie as necessary.
+Most applications will use the [`LoadAndSave()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.LoadAndSave) middleware. This middleware takes care of loading and committing session data to the session store, and communicating the session token to/from the client in a cookie as necessary.
 
-If you want to customize the behavior (like communicating the session token to/from the client in a HTTP header, or creating a distributed lock on the session token for the duration of the request) you are encouraged to create your own alternative middleware using the code in [`LoadAndSave()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.LoadAndSave) as a template. An example is [given here](https://gist.github.com/alexedwards/cc6190195acfa466bf27f05aa5023f50).
+If you want to customize the behavior (like communicating the session token to/from the client in a HTTP header, or creating a distributed lock on the session token for the duration of the request) you are encouraged to create your own alternative middleware using the code in [`LoadAndSave()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.LoadAndSave) as a template. An example is [given here](https://gist.github.com/bastilmr/cc6190195acfa466bf27f05aa5023f50).
 
-Or for more fine-grained control you can load and save sessions within your individual handlers (or from anywhere in your application). [See here](https://gist.github.com/alexedwards/0570e5a59677e278e13acb8ea53a3b30) for an example.
+Or for more fine-grained control you can load and save sessions within your individual handlers (or from anywhere in your application). [See here](https://gist.github.com/bastilmr/0570e5a59677e278e13acb8ea53a3b30) for an example.
 
 ### Configuring the Session Store
 
@@ -152,30 +152,30 @@ The session stores currently included are shown in the table below. Please click
 
 | Package                                                                             | Backend                                                                         | Embedded | In-Memory | Multi-Process |
 | :---------------------------------------------------------------------------------- | --------------------------------------------------------------------------------|----------|-----------|---------------| 
-| [badgerstore](https://github.com/alexedwards/scs/tree/master/badgerstore)           | [BadgerDB](https://dgraph.io/docs/badger/)                                      | Y | N | N |
-| [boltstore](https://github.com/alexedwards/scs/tree/master/boltstore)               | [BBolt](https://go.etcd.io/bbolt)                                               | Y | N | N |
-| [bunstore](https://github.com/alexedwards/scs/tree/master/bunstore)                 | [Bun](https://bun.uptrace.dev/) ORM for PostgreSQL/MySQL/MSSQL/SQLite           | N | N | Y | 
-| [buntdbstore](https://github.com/alexedwards/scs/tree/master/buntdbstore)           | [BuntDB](https://github.com/tidwall/buntdb)                                     | Y | Y | N |
-| [cockroachdbstore](https://github.com/alexedwards/scs/tree/master/cockroachdbstore) | [CockroachDB](https://www.cockroachlabs.com/)                                   | N | N | Y |
-| [consulstore](https://github.com/alexedwards/scs/tree/master/consulstore)           | [Consul](https://www.consul.io/)                                                | N | Y | Y |
-| [etcdstore](https://github.com/alexedwards/scs/tree/master/etcdstore)               | [Etcd](https://etcd.io/)                                                        | N | N | Y |
-| [firestore](https://github.com/alexedwards/scs/tree/master/firestore)               | [Google Cloud Firestore](https://cloud.google.com/firestore)                    | N | ? | Y |
-| [gormstore](https://github.com/alexedwards/scs/tree/master/gormstore)               | [GORM](https://gorm.io/index.html) ORM for PostgreSQL/MySQL/SQLite/MSSQL/TiDB   | N | N | Y |
-| [leveldbstore](https://github.com/alexedwards/scs/tree/master/leveldbstore)         | [LevelDB](https://github.com/syndtr/goleveldb)                                  | Y | N | N |
-| [memstore](https://github.com/alexedwards/scs/tree/master/memstore)                 | In-memory (default)                                                             | Y | Y | N |
-| [mongodbstore](https://github.com/alexedwards/scs/tree/master/mongodbstore)         | [MongoDB](https://www.mongodb.com/)                                             | N | N | Y |
-| [mssqlstore](https://github.com/alexedwards/scs/tree/master/mssqlstore)             | [Microsoft SQL Server](https://www.microsoft.com/en-us/sql-server)              | N | N | Y | 
-| [mysqlstore](https://github.com/alexedwards/scs/tree/master/mysqlstore)             | [MySQL](https://www.mysql.com/)                                                 | N | N | Y |
-| [pgxstore](https://github.com/alexedwards/scs/tree/master/pgxstore)                 | [PostgreSQL](https://www.postgresql.org/) (using the [pgx](https://github.com/jackc/pgx) driver) | N | N | Y |
-| [postgresstore](https://github.com/alexedwards/scs/tree/master/postgresstore)       | [PostgreSQL](https://www.postgresql.org/) (using the [pq](https://github.com/lib/pq) driver)     | N | N | Y |
-| [redisstore](https://github.com/alexedwards/scs/tree/master/redisstore)             | [Redis](https://redis.io/)                                                      | N | Y | Y |
-| [sqlite3store](https://github.com/alexedwards/scs/tree/master/sqlite3store)         | [SQLite3](https://sqlite.org/) (using the [mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) CGO-based driver) | Y | N | Y |
+| [badgerstore](https://github.com/bastilmr/scs/tree/master/badgerstore)           | [BadgerDB](https://dgraph.io/docs/badger/)                                      | Y | N | N |
+| [boltstore](https://github.com/bastilmr/scs/tree/master/boltstore)               | [BBolt](https://go.etcd.io/bbolt)                                               | Y | N | N |
+| [bunstore](https://github.com/bastilmr/scs/tree/master/bunstore)                 | [Bun](https://bun.uptrace.dev/) ORM for PostgreSQL/MySQL/MSSQL/SQLite           | N | N | Y | 
+| [buntdbstore](https://github.com/bastilmr/scs/tree/master/buntdbstore)           | [BuntDB](https://github.com/tidwall/buntdb)                                     | Y | Y | N |
+| [cockroachdbstore](https://github.com/bastilmr/scs/tree/master/cockroachdbstore) | [CockroachDB](https://www.cockroachlabs.com/)                                   | N | N | Y |
+| [consulstore](https://github.com/bastilmr/scs/tree/master/consulstore)           | [Consul](https://www.consul.io/)                                                | N | Y | Y |
+| [etcdstore](https://github.com/bastilmr/scs/tree/master/etcdstore)               | [Etcd](https://etcd.io/)                                                        | N | N | Y |
+| [firestore](https://github.com/bastilmr/scs/tree/master/firestore)               | [Google Cloud Firestore](https://cloud.google.com/firestore)                    | N | ? | Y |
+| [gormstore](https://github.com/bastilmr/scs/tree/master/gormstore)               | [GORM](https://gorm.io/index.html) ORM for PostgreSQL/MySQL/SQLite/MSSQL/TiDB   | N | N | Y |
+| [leveldbstore](https://github.com/bastilmr/scs/tree/master/leveldbstore)         | [LevelDB](https://github.com/syndtr/goleveldb)                                  | Y | N | N |
+| [memstore](https://github.com/bastilmr/scs/tree/master/memstore)                 | In-memory (default)                                                             | Y | Y | N |
+| [mongodbstore](https://github.com/bastilmr/scs/tree/master/mongodbstore)         | [MongoDB](https://www.mongodb.com/)                                             | N | N | Y |
+| [mssqlstore](https://github.com/bastilmr/scs/tree/master/mssqlstore)             | [Microsoft SQL Server](https://www.microsoft.com/en-us/sql-server)              | N | N | Y | 
+| [mysqlstore](https://github.com/bastilmr/scs/tree/master/mysqlstore)             | [MySQL](https://www.mysql.com/)                                                 | N | N | Y |
+| [pgxstore](https://github.com/bastilmr/scs/tree/master/pgxstore)                 | [PostgreSQL](https://www.postgresql.org/) (using the [pgx](https://github.com/jackc/pgx) driver) | N | N | Y |
+| [postgresstore](https://github.com/bastilmr/scs/tree/master/postgresstore)       | [PostgreSQL](https://www.postgresql.org/) (using the [pq](https://github.com/lib/pq) driver)     | N | N | Y |
+| [redisstore](https://github.com/bastilmr/scs/tree/master/redisstore)             | [Redis](https://redis.io/)                                                      | N | Y | Y |
+| [sqlite3store](https://github.com/bastilmr/scs/tree/master/sqlite3store)         | [SQLite3](https://sqlite.org/) (using the [mattn/go-sqlite3](https://github.com/mattn/go-sqlite3) CGO-based driver) | Y | N | Y |
 
 Custom session stores are also supported. Please [see here](#using-custom-session-stores) for more information.
 
 ### Using Custom Session Stores
 
-[`scs.Store`](https://pkg.go.dev/github.com/alexedwards/scs/v2#Store) defines the interface for custom session stores. Any object that implements this interface can be set as the store when configuring the session.
+[`scs.Store`](https://pkg.go.dev/github.com/bastilmr/scs/v2#Store) defines the interface for custom session stores. Any object that implements this interface can be set as the store when configuring the session.
 
 ```go
 type Store interface {
@@ -208,7 +208,7 @@ type IterableStore interface {
 
 #### Using Custom Session Stores (with context.Context)
 
-[`scs.CtxStore`](https://pkg.go.dev/github.com/alexedwards/scs/v2#CtxStore) defines the interface for custom session stores (with methods take context.Context parameter).
+[`scs.CtxStore`](https://pkg.go.dev/github.com/bastilmr/scs/v2#CtxStore) defines the interface for custom session stores (with methods take context.Context parameter).
 
 ```go
 type CtxStore interface {
@@ -233,7 +233,7 @@ type IterableCtxStore interface {
 
 ### Preventing Session Fixation
 
-To help prevent session fixation attacks you should [renew the session token after any privilege level change](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Session_Management_Cheat_Sheet.md#renew-the-session-id-after-any-privilege-level-change). Commonly, this means that the session token must to be changed when a user logs in or out of your application. You can do this using the [`RenewToken()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.RenewToken) method like so:
+To help prevent session fixation attacks you should [renew the session token after any privilege level change](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Session_Management_Cheat_Sheet.md#renew-the-session-id-after-any-privilege-level-change). Commonly, this means that the session token must to be changed when a user logs in or out of your application. You can do this using the [`RenewToken()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.RenewToken) method like so:
 
 ```go
 func loginHandler(w http.ResponseWriter, r *http.Request) {
@@ -253,7 +253,7 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 
 ### Multiple Sessions per Request
 
-It is possible for an application to support multiple sessions per request, with different lifetime lengths and even different stores. Please [see here for an example](https://gist.github.com/alexedwards/22535f758356bfaf96038fffad154824).
+It is possible for an application to support multiple sessions per request, with different lifetime lengths and even different stores. Please [see here for an example](https://gist.github.com/bastilmr/22535f758356bfaf96038fffad154824).
 
 ### Enumerate All Sessions
 
@@ -301,13 +301,13 @@ func flushingHandler(w http.ResponseWriter, r *http.Request) {
 }
 ```
 
-For a complete working example, please see [this comment](https://github.com/alexedwards/scs/issues/141#issuecomment-1774050802).
+For a complete working example, please see [this comment](https://github.com/bastilmr/scs/issues/141#issuecomment-1774050802).
 
-Note that the `http.ResponseWriter` passed on by the [`LoadAndSave()`](https://pkg.go.dev/github.com/alexedwards/scs/v2#SessionManager.LoadAndSave) middleware does not support the `http.Flusher` interface directly. This effectively means that flushing/streaming is only supported by SCS if you are using Go >= 1.20.
+Note that the `http.ResponseWriter` passed on by the [`LoadAndSave()`](https://pkg.go.dev/github.com/bastilmr/scs/v2#SessionManager.LoadAndSave) middleware does not support the `http.Flusher` interface directly. This effectively means that flushing/streaming is only supported by SCS if you are using Go >= 1.20.
 
 ### Compatibility
 
-You may have some problems using this package with Go frameworks that do not propagate the request context from standard-library compatible middleware, like [Echo](https://github.com/alexedwards/scs/issues/57) and [Fiber](https://github.com/alexedwards/scs/issues/106). If you are using Echo, you may wish to evaluate using the [echo-scs-session](https://github.com/canidam/echo-scs-session) package for session management.
+You may have some problems using this package with Go frameworks that do not propagate the request context from standard-library compatible middleware, like [Echo](https://github.com/bastilmr/scs/issues/57) and [Fiber](https://github.com/bastilmr/scs/issues/106). If you are using Echo, you may wish to evaluate using the [echo-scs-session](https://github.com/canidam/echo-scs-session) package for session management.
 
 ### Contributing
 

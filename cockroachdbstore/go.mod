@@ -1,4 +1,4 @@
-module github.com/alexedwards/scs/cockroachdbstore
+module github.com/bastilmr/scs/cockroachdbstore
 
 go 1.12
 

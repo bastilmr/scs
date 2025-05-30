@@ -1,4 +1,4 @@
-module github.com/alexedwards/scs/mssqlstore
+module github.com/bastilmr/scs/mssqlstore
 
 go 1.12
 

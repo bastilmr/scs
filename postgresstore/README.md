@@ -1,6 +1,6 @@
 # postgresstore
 
-A PostgreSQL based session store for [SCS](https://github.com/alexedwards/scs) using the [pq](https://github.com/lib/pq) driver.
+A PostgreSQL based session store for [SCS](https://github.com/bastilmr/scs) using the [pq](https://github.com/lib/pq) driver.
 
 ## Setup
 
@@ -29,8 +29,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/alexedwards/scs/v2"
-	"github.com/alexedwards/scs/postgresstore"
+	"github.com/bastilmr/scs/v2"
+	"github.com/bastilmr/scs/postgresstore"
 
 	_ "github.com/lib/pq"
 )

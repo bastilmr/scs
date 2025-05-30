@@ -1,6 +1,6 @@
 # pgxstore
 
-A PostgreSQL based session store for [SCS](https://github.com/alexedwards/scs) using the [pgx](https://github.com/jackc/pgx) driver.
+A PostgreSQL based session store for [SCS](https://github.com/bastilmr/scs) using the [pgx](https://github.com/jackc/pgx) driver.
 
 ## Setup
 
@@ -29,8 +29,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/alexedwards/scs/pgxstore"
-	"github.com/alexedwards/scs/v2"
+	"github.com/bastilmr/scs/pgxstore"
+	"github.com/bastilmr/scs/v2"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 

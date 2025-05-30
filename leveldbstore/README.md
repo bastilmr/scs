@@ -1,6 +1,6 @@
 # leveldbstore
 
-A [LevelDB](https://github.com/syndtr/goleveldb) based session store for [SCS](https://github.com/alexedwards/scs).
+A [LevelDB](https://github.com/syndtr/goleveldb) based session store for [SCS](https://github.com/bastilmr/scs).
 
 ## Setup
 
@@ -15,8 +15,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/alexedwards/scs/v2"
-	"github.com/alexedwards/scs/leveldbstore"
+	"github.com/bastilmr/scs/v2"
+	"github.com/bastilmr/scs/leveldbstore"
 	"github.com/syndtr/goleveldb/leveldb"
 )
 

@@ -1,6 +1,6 @@
 # buntdbstore
 
-A [BuntDB](https://github.com/tidwall/buntdb) based session store for [SCS](https://github.com/alexedwards/scs).
+A [BuntDB](https://github.com/tidwall/buntdb) based session store for [SCS](https://github.com/bastilmr/scs).
 
 ## Setup
 
@@ -15,8 +15,8 @@ import (
 	"io"
 	"net/http"
 
-	"github.com/alexedwards/scs/v2"
-	"github.com/alexedwards/scs/buntdbstore"
+	"github.com/bastilmr/scs/v2"
+	"github.com/bastilmr/scs/buntdbstore"
 	"github.com/tidwall/buntdb"
 )
 
